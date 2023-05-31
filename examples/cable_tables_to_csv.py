@@ -35,8 +35,7 @@ def main():
 
     options, args = parser.parse_args()
     acad = Autocad()
-    filename = args[0] if args else u"exported_%s.%s" % (acad.doc.Name,
-                                                         options.format)
+    filename = args[0] if args else f"exported_{acad.doc.Name}.{options.format}"
     output_table = Table()
     extract_tables_from_dwg(acad, output_table, not options.include_model)
     output_table.save(filename, options.format)

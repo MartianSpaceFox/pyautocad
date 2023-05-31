@@ -94,7 +94,7 @@ class Table(object):
 
     def _raise_if_bad_format(self, fmt):
         if fmt not in self._write_formats:
-            raise FormatNotSupported('Unknown format: %s' % fmt)
+            raise FormatNotSupported(f'Unknown format: {fmt}')
 
     def to_csv(self, stream, encoding='cp1251', delimiter=';', **kwargs):
         """ Writes data in `csv` format to stream
@@ -123,9 +123,9 @@ class Table(object):
         """
         if fmt is None:
             fmt = os.path.splitext(filename)[1][1:]
-        raw_data =  _TableImporter(csv_encoding=csv_encoding,
-                                   csv_delimiter=csv_delimiter).import_table(filename, fmt)
-        return raw_data
+        return _TableImporter(
+            csv_encoding=csv_encoding, csv_delimiter=csv_delimiter
+        ).import_table(filename, fmt)
 
     @staticmethod
     def available_write_formats():
@@ -143,13 +143,12 @@ class _TableImporter(object):
         self.csv_delimiter = csv_delimiter
 
     def import_table(self, filename, fmt):
-        reader = getattr(self, 'read_%s' % fmt, None)
+        reader = getattr(self, f'read_{fmt}', None)
         if reader is None:
-            raise FormatNotSupported('Unknown fmt: %s' % fmt)
+            raise FormatNotSupported(f'Unknown fmt: {fmt}')
         dataset = []
         with open(filename, 'rb') as stream:
-            for row in reader(stream):
-                dataset.append(row)
+            dataset.extend(iter(reader(stream)))
             return dataset
 
     def read_csv(self, stream):

@@ -182,9 +182,7 @@ def calc_pivot_table(data, value_extractor=length_pivot):
 
 
 def calc_pivot_tips(pivot_dcount):
-    tip_counts = []
-    for row in pivot_dcount[1:]:
-        tip_counts.append((row[0], sum(row[1:])))
+    tip_counts = [(row[0], sum(row[1:])) for row in pivot_dcount[1:]]
     result = defaultdict(int)
     for section, count in tip_counts:
         if '(' in section:
