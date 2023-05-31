@@ -62,11 +62,11 @@ class CachedTestCase(unittest.TestCase):
         a = C()
         ac = Cached(a)
         a.getx = mock.Mock(name='getx', return_value=1)
-        for i in range(5):
+        for _ in range(5):
             _ = ac.x
         self.assertEqual(a.getx.call_count, 1)
         ac.switch_caching(False)
-        for i in range(5):
+        for _ in range(5):
             _ = ac.x
         self.assertEqual(a.getx.call_count, 5 + 1)
 

@@ -42,7 +42,7 @@ class TableTestCase(unittest.TestCase):
         t.writerow(row)
         #for fmt in tables.available_write_formats():
         for fmt in tables.available_read_formats():
-            filename = 'test_hello.%s' % fmt
+            filename = f'test_hello.{fmt}'
             t.save(filename, fmt)
             t2 = tables.Table.data_from_file(filename, fmt)
             self.assertEqual(t2, data)

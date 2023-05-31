@@ -22,7 +22,6 @@ class ApiTestCase(unittest.TestCase):
 
     def tearDown(self):
         self.doc.Close(False)
-        pass
 
     def test_points_arguments(self):
         model = self.acad.model
@@ -81,9 +80,9 @@ class ApiTestCase(unittest.TestCase):
         p2 = APoint(10, 10, 0)
         n_lines = 10
         n_texts = 15
-        for i in range(n_lines):
+        for _ in range(n_lines):
             model.AddLine(p1, p2)
-        for i in range(n_texts):
+        for _ in range(n_texts):
             model.AddMText(p2, 10, u'Dummy')
 
         lines_count = len(list(self.acad.iter_objects('Line')))
@@ -98,7 +97,7 @@ class ApiTestCase(unittest.TestCase):
         p1 = APoint(0, 0)
         model = self.acad.model
         for i in range(5):
-            model.AddText(u'test %s' % i, p1, 2.5)
+            model.AddText(f'test {i}', p1, 2.5)
 
         def text_contains_3(text_obj):
             return '3' in text_obj.TextString

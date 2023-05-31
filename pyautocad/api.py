@@ -122,7 +122,10 @@ class Autocad(object):
                 return
             if object_names:
                 object_name = item.ObjectName.lower()
-                if not any(possible_name in object_name for possible_name in object_names):
+                if all(
+                    possible_name not in object_name
+                    for possible_name in object_names
+                ):
                     continue
             if not dont_cast:
                 item = self.best_interface(item)
@@ -146,10 +149,14 @@ class Autocad(object):
         """
         if predicate is None:
             predicate = bool
-        for obj in self.iter_objects(object_name_or_list, container):
-            if predicate(obj):
-                return obj
-        return None
+        return next(
+            (
+                obj
+                for obj in self.iter_objects(object_name_or_list, container)
+                if predicate(obj)
+            ),
+            None,
+        )
 
     def best_interface(self, obj):
         """ Retrieve best interface for object """

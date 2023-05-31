@@ -6,7 +6,7 @@ from pyautocad.contrib.tables import Table
 acad = Autocad()
 p1 = APoint(0, 0)
 for i in range(5):
-    obj = acad.model.AddText(u'Hi %s!' % i, p1, 2.5)
+    obj = acad.model.AddText(f'Hi {i}!', p1, 2.5)
     p1.y += 10
 
 table = Table()

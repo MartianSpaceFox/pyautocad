@@ -26,7 +26,7 @@ class Mock(object):
         return Mock()
 
     @classmethod
-    def __getattr__(self, name):
+    def __getattr__(cls, name):
         if name in ('__file__', '__path__'):
             return os.devnull
         elif name[0] == name[0].upper():
@@ -105,19 +105,7 @@ exclude_patterns = ['_build']
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
 
-# A list of ignored prefixes for module index sorting.
-#modindex_common_prefix = []
-
-
-# -- Options for HTML output ---------------------------------------------------
-
-# The theme to use for HTML and HTML Help pages.  See the documentation for
-# a list of builtin themes.
-if on_rtd:
-    html_theme = 'default'
-else:
-    html_theme = 'default'
-
+html_theme = 'default'
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.

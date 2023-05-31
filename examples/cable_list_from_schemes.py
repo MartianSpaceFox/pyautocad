@@ -56,7 +56,7 @@ def get_cables(acad, block, known_targets):
 
         logger.info("!!!%s\n", text)
         m = m_cable.groupdict()
-        cable_name = "%s-%s" % (m['name'], m['source'])
+        cable_name = f"{m['name']}-{m['source']}"
         target = known_targets.get(cable_name, '')
         if not target:
             target = m['name']
@@ -103,22 +103,20 @@ def main():
                       help=u'Не использовать данные об очередности и поле "Конец"')
     options, args = parser.parse_args()
 
-    output_file = args[0] if args else u"cables_from_%s.%s" % (acad.doc.Name, options.format)
+    output_file = (
+        args[0] if args else f"cables_from_{acad.doc.Name}.{options.format}"
+    )
     if not options.known_targets and not options.dont_use_known:
         options.known_targets = output_file
     known_targets = get_known_targets(options.known_targets)
     output_table = Table()
-    if options.single_doc:
-        documents = [acad.doc]
-    else:
-        documents = acad.app.Documents
-
+    documents = [acad.doc] if options.single_doc else acad.app.Documents
     for doc in documents:
         try:
             cables = get_cables(acad, doc.Modelspace, known_targets)
             sorted_cables = sort_cables_by_targets(cables, known_targets)
             for row in sorted_cables:
-                output_table.writerow([s for s in row])
+                output_table.writerow(list(row))
         except Exception:
             logger.exception('Error while processing %s', doc.Name)
     output_table.save(output_file, options.format)

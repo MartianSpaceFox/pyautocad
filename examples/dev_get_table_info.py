@@ -36,10 +36,10 @@ def print_table_info(table, print_rows=0):
 def main():
     acad = Autocad()
     layout = acad.doc.ActiveLayout
-    table = acad.find_one('table', layout.Block)
-    if not table:
+    if table := acad.find_one('table', layout.Block):
+        print_table_info(table, 3)
+    else:
         return
-    print_table_info(table, 3)
 
 
 if __name__ == '__main__':
